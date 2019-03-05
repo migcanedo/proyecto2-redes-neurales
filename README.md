@@ -5,7 +5,7 @@
 ## Redes Neurales
 
 ### Resumen
-El objetivo de este proyecto es la familiarización del estudiante con el algoritmo de backpropagation sobre redes neuronales del tipo feedforward, así como su uso sobre diversos conjuntos de datos. Para ello se pide que se implemente dicho algoritmo en el lenguaje imperativo de su preferencia; para luego evaluar esa implementación sobre 2 conjuntos de datos: uno generado artificialmente y el clásico Iris Dataset.
+El objetivo de este proyecto es la familiarización del estudiante con el algoritmo de backpropagation sobre redes neuronales del tipo feedforward, así como su uso sobre diversos conjuntos de datos. Para ello se pide que se implemente dicho algoritmo en el lenguaje imperativo de su preferencia; para luego evaluar esa implementación sobre 2 conjuntos de datos: uno generado artificialmente y el clásico *Iris Dataset*.
 
 ### Actividades
 
@@ -20,11 +20,11 @@ El objetivo de este proyecto es la familiarización del estudiante con el algori
 
 
 	El área A es el cuadrado cuya diagonal es el segmento de recta que une los puntos (0, 0) y (10, 10), menos el área que ocupa B . Trabajaremos sobre dos áreas para B:
-	El área B esta delimitada por una circunferencia centrada en (5,5) con radio 4. La ecuación canónica de esta circunferencia es: (x - 5)^2 + (y -5)^2 = 36
+	El área B esta delimitada por una circunferencia centrada en (5,5) con radio 4. La ecuación canónica de esta circunferencia es: (x - 5)^2 + (y -5)^2 = 36.
 
 	Se entiende por patrón (o ejemplo un punto (x, y) dentro del rectángulo, etiquetado con el área al que este pertenece (A o B ). 
 	
-	Se les suministrarán tres conjuntos de entrenamiento de 500, 1000 y 2000 patrones ya clasificados. Con estos patrones usted deberá entrenar su red. Los puntos en los datos que se le proporcionan fueron generados uniformemente sobre todo el cuadrado. Estos conjuntos de datos se encuentran en el repositorio de github del proyecto, y tienen como nombre "datos_P2_EM2019_N[Y].txt", donde **Y** es el cantidad de datos en el archivo. Un ejemplo de la visualización de estos datos para N=500, con los ejemplos etiquetados "círculo" de color azul y los "no círculo" en rojo, pueden verse en la imágenes datos_500.png. 
+	Se les suministrarán tres conjuntos de entrenamiento de 500, 1000 y 2000 patrones ya clasificados. Con estos patrones usted deberá entrenar su red. Los puntos en los datos que se le proporcionan fueron generados uniformemente sobre todo el cuadrado. Estos conjuntos de datos se encuentran en el repositorio de git del proyecto, y tienen como nombre **"datos_P2_EM2019_N[Y].txt"**, donde **Y** es el cantidad de datos en el archivo. Un ejemplo de la visualización de estos datos para **N=500**, con los ejemplos etiquetados "círculo" de color azul y los "no círculo" en rojo, pueden verse en la imágen datos_500.png. 
 
 	<img src="datos_500.png" width="300" height="300">
 
@@ -47,7 +47,8 @@ El objetivo de este proyecto es la familiarización del estudiante con el algori
 	Evalúe los modelos en base a: 1) error en entrenamiento, 2) error en prueba, 3) falsos positivos, 4) falsos negativos. 
 
 	2.4. Para el mejor modelo  encontrado: 
-		- Muestre la gráfica de convergencia 
+
+		- Muestre la gráfica de convergencia. 
 		- Muestre visualmente la validación del aprendizaje, tomando puntos de un barrido completo de la región cuadrada y coloreando cada punto con un color dependiendo de la clasificación que arroje la red. 
 
 	
