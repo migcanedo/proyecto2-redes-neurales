@@ -24,7 +24,7 @@ El objetivo de este proyecto es la familiarización del estudiante con el algori
 
 	Se entiende por patrón (o ejemplo un punto (x, y) dentro del rectángulo, etiquetado con el área al que este pertenece (A o B ). 
 	
-	Se les suministrarán tres conjuntos de entrenamiento de 500, 1000 y 2000 patrones ya clasificados. Con estos patrones usted deberá entrenar su red. Los puntos en los datos que se le proporcionan fueron generados uniformemente sobre todo el cuadrado. Estos conjuntos de datos se encuentran en el repositorio de git del proyecto, y tienen como nombre **"datos_P2_EM2019_N[Y].txt"**, donde **Y** es el cantidad de datos en el archivo. Un ejemplo de la visualización de estos datos para **N=500**, con los ejemplos etiquetados "círculo" de color azul y los "no círculo" en rojo, pueden verse en la imágen datos_500.png. 
+	Se les suministrarán tres conjuntos de entrenamiento de 500, 1000 y 2000 patrones ya clasificados. Con estos patrones usted deberá entrenar su red. Los puntos en los datos que se le proporcionan fueron generados uniformemente sobre todo el cuadrado. Estos conjuntos de datos se encuentran en el repositorio de git del proyecto, y tienen como nombre **"datos_P2_EM2019_N[Y].txt"**, donde **Y** es el cantidad de datos en el archivo. Un ejemplo de la visualización de estos datos para **N=500**, con los ejemplos etiquetados "círculo" de color azul y los "no círculo" en rojo, pueden verse en la siguiente imágen. 
 
 	<img src="datos_500.png" width="300" height="300">
 
@@ -38,7 +38,7 @@ El objetivo de este proyecto es la familiarización del estudiante con el algori
 	2.4. Cree modelos para clasificar dos regiones predeterminadas (como las de la actividad anterior), manteniendo la región A, variando la región B usando los radios r = {3, 2, 1}, pueden usar la tasa de aprendizaje conseguida en 2.1.  Deben generan sus conjuntos de entrenamiento. 
 
 
-	Para cada modelo (Conjunto de entrenamiento x Número de neuronas x tasa de aprendizaje) reporte los errores de entrenamiento . 
+	Para cada modelo (Conjunto de entrenamiento x Número de neuronas x tasa de aprendizaje) reporte los errores de entrenamiento. 
 
 	Tome como conjunto de prueba los puntos (aproximadamente 10.000 = 100 x 100) de un barrido completo de la región cuadrada correctamente etiquetados. 
 
@@ -47,9 +47,8 @@ El objetivo de este proyecto es la familiarización del estudiante con el algori
 	Evalúe los modelos en base a: 1) error en entrenamiento, 2) error en prueba, 3) falsos positivos, 4) falsos negativos. 
 
 	2.4. Para el mejor modelo  encontrado: 
-
-		- Muestre la gráfica de convergencia. 
-		- Muestre visualmente la validación del aprendizaje, tomando puntos de un barrido completo de la región cuadrada y coloreando cada punto con un color dependiendo de la clasificación que arroje la red. 
+	- Muestre la gráfica de convergencia. 
+	- Muestre visualmente la validación del aprendizaje, tomando puntos de un barrido completo de la región cuadrada y coloreando cada punto con un color dependiendo de la clasificación que arroje la red. 
 
 	
 	2.5. OPCIONAL: Pruebe con una red de dos capas.
@@ -73,8 +72,9 @@ La fecha de entrega sugerida es el día Miércoles 20 de Marzo, a media noche.
 Deberán dejar en el repositorio de github de su grupo su código y un breve informe.
 
 El informe debe ser breve y conciso, debe incluir:
-	- Resumen. 
-	- Detalles de implementación/experimentación. (Lenguaje usado, detalles del algoritmo, etc). 
-	- Presentación y discusión de los resultados (En base a los elementos requeridos para cada conjunto de datos) 
-	- Conclusiones 
-	- Referencias
+
+- Resumen. 
+- Detalles de implementación/experimentación. (Lenguaje usado, detalles del algoritmo, etc). 
+- Presentación y discusión de los resultados (En base a los elementos requeridos para cada conjunto de datos) 
+- Conclusiones 
+- Referencias
