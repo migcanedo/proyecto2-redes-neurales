@@ -16,7 +16,7 @@ El objetivo de este proyecto es la familiarización del estudiante con el algori
  
 
 	
-	<img src="circulo.jpg" width="300" height="300">
+	<img src="circulo.jpg" width="270" height="270">
 
 
 	El área A es el cuadrado cuya diagonal es el segmento de recta que une los puntos (0, 0) y (10, 10), menos el área que ocupa B . Trabajaremos sobre dos áreas para B:
@@ -67,7 +67,7 @@ El objetivo de este proyecto es la familiarización del estudiante con el algori
 
 ### Entrega
 
-La fecha de entrega sugerida es el día Miércoles 20 de Marzo, a media noche.
+La fecha de entrega es el día Miércoles 20 de Marzo, a media noche.
 
 Deberán dejar en el repositorio de github de su grupo su código y un breve informe.
 
