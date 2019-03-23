@@ -98,7 +98,7 @@ for n in cantNeuronas:
             salidasCapaOculta.insert(0,1)
             # Pasamos las salidas de la capa oculta a la neurona de salida
             salidaFinal = neuronaSalida.activarNeurona(salidasCapaOculta)
-            error = float(respuestasDeseadas[i])-float(salidaFinal)
+            error = float(target_train[i])-float(salidaFinal)
             errorCuadraticoMedio = float(errorCuadraticoMedio) + (float(error)**2)
             gradienteSalida = error # por la derivada de la funcion linea: 1 
             # Actualizo los pesos de la neurona salida
@@ -137,3 +137,24 @@ for n in cantNeuronas:
     plt.ylabel('Error Cuadratico Medio')
     plt.title("Historial de Errores")
     plt.show()
+
+    # Verificacion ###########################################################################################
+    # Procesamos las entradas
+    errorCuadraticoMedio = 0
+    salidasPrueba = []
+    for i in range(0,len(data_test)): 
+        # Pasamos la entrada a cada neurona de la capa oculta
+        salidasCapaOculta = []
+        for neurona in capaOculta:
+            salidasCapaOculta.append(neurona.activarNeurona(data_test[i]))
+        # Agregamos el sesgo de entrada a la capa de salida
+        salidasCapaOculta.insert(0,1)
+        # Pasamos las salidas de la capa oculta a la neurona de salida
+        salidaFinal = neuronaSalida.activarNeurona(salidasCapaOculta)
+        salidasPrueba.append(salidaFinal)
+        error = float(target_test[i])-float(salidaFinal)
+        errorCuadraticoMedio = float(errorCuadraticoMedio) + (float(error)**2)
+
+    errorCuadraticoMedio = errorCuadraticoMedio/len(data_test)
+    erroresPrueba.append(errorCuadraticoMedio)
+    print("Error cuadratico medio del conjunto de prueba con " + str(n) + " Neuronas: " + str(errorCuadraticoMedio) + "")
