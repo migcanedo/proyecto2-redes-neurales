@@ -30,8 +30,8 @@ class Perceptron:
         self.pesos=[]
         self.funcionActivacion=funcionActivacion
         for i in range(0,cantidadParametros+1):
-            self.pesos.append(0)
-            #self.pesos.append(uniform(0,1))
+            # Iniciamos los pesos con un numero aleatorio entre -0.5 y 0.5
+            self.pesos.append(uniform(-0.5,0.5))
 
     def funcionLogistica(self, elemento, alpha=1):
         return 1 / (1 + exp(-alpha*elemento))
@@ -84,22 +84,22 @@ class Perceptron:
         else:
             return 1
 
-# Leemos los datos y separamos las entradas
-entradas, respuestasDeseadas = leerTXT("datos_P2_EM2019_N500.txt")
+# Leemos los datos y separamos las entradas para entrenamiento y prueba
+entradas, respuestasDeseadas = leerTXT("datos_P2_EM2019_N1000.txt")
 data_train, data_test, target_train, target_test = train_test_split(entradas, respuestasDeseadas, test_size = 0.2, shuffle=False)
 
 erroresEntrenamiento = []
 erroresPrueba = []
 # Cantidad de Neuronas en la capa oculta
 n = 8
-tasasAprendizaje = [0.007]
-mejorError = [1000000,10000000,1000000]
+tasasAprendizaje = [0.06]
+mejorError = [1000000,10000000,1000000]     # [Error, epoca, tasa de apredizaje]
 for tasaAprendizaje in tasasAprendizaje:
     # Arreglo de neuronas para la capa oculta
     capaOculta = []
     for i in range(0,n):
         capaOculta.append(Perceptron(tasaAprendizaje, 1,"Sigmoidal"))
-    # Creamos neurona de salida con funcion de activacion lineal
+    # Creamos neurona de salida con funcion de activacion Signo
     neuronaSalida = Perceptron(tasaAprendizaje, n, "Signo")
     epoca = 0
     # Para graficar
@@ -171,19 +171,20 @@ for tasaAprendizaje in tasasAprendizaje:
             salidaFinal = neuronaSalida.activarNeurona(salidasCapaOculta)
             if float(target_test[i]) != float(salidaFinal):
                 errorAcumulado += 1
-        erroresTest.append(errorAcumulado/len(data_test))
+        errorRelativo = errorAcumulado/len(data_test)        
+        erroresTest.append(errorRelativo)
 
-        if mejorError[0] > errorAcumulado:
-            mejorError = [errorAcumulado, epoca, tasaAprendizaje]
+        if mejorError[0] > errorRelativo:
+            mejorError = [errorRelativo, epoca, tasaAprendizaje]
 
-print("Mejor error obtenido " + str(mejorError[0]) + " en la epoca " + str(mejorError[1]) + " y tasa de aprendizaje " + str(mejorError[2]))
+    print("Mejor error obtenido en prueba: " + str(mejorError[0]) + ", en la epoca " + str(mejorError[1]) + ", con tasa de aprendizaje " + str(mejorError[2]))
 
     # Grafica 
-    # plt.plot(epocas,erroresTrain, label="Entrenamiento")
-    # plt.plot(epocas,erroresTest, label="Prueba")
-    # plt.xlabel('Epocas')
-    # plt.ylabel('% de elementos mal clasificados')
-    # plt.title("Historial de Errores con tasa de aprendizaje " + str(tasaAprendizaje))
-    # plt.legend()
-    # plt.show()
+    plt.plot(epocas,erroresTrain, label="Entrenamiento")
+    plt.plot(epocas,erroresTest, label="Prueba")
+    plt.xlabel('Epocas')
+    plt.ylabel('% de elementos mal clasificados')
+    plt.title("Historial de Errores con tasa de aprendizaje " + str(tasaAprendizaje))
+    plt.legend()
+    plt.show()
 
