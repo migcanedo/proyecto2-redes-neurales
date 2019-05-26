@@ -1,90 +1,120 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+
 
 def normalizar(data):
-    return (data - data.mean()) / data.std()
+	return (data - data.mean()) / data.std()
 
-def sigmoid(m):
-	return 1/(1+np.exp(-m))
 
-def der_sigmoid(m):
-    return m * (1 - m)
+'''
+	Funcion que compara los resultados originales y los obtenidos para
+	calcular lasmetricas de evaluacion como:
+		- Accuracy
+		- # de Falsos Positivos 
+		- # de Falsos Negativos
+	
+'''
+def metricas_eval(t_ori, t_obt):
+	concat = pd.concat([t_ori.reset_index(drop=True), t_obt.reset_index(drop=True)], axis=1)
+	concat.columns = ["ori", "obt"]
+	acc = (concat.iloc[:,0] == concat.iloc[:,1]).astype(int).sum()/concat.shape[0]
+	falsos_negativos = concat[(concat["ori"] == "1")&(concat["obt"] == "-1")]["ori"].count()
+	falsos_positivos = concat[(concat["ori"] == "-1")&(concat["obt"] == "1")]["ori"].count()
 
-def rms(obt, esp):
-	rms = 0.0
-	for x in range(len(obt)):
-		error = obt[x] - esp[x]
-		rms += error * error 
+	return acc, falsos_positivos, falsos_negativos
 
+'''
+	Clase que define el comportamiento de una Red Neuronal de Clasificacion con 
+	una sola capa oculta y 	diferente cantidad de neuronas de entrada y salida.
+'''
 class RedNeural():
-	def __init__(self,data,target,neu_intermedia):
-		self.data = data
-		# print(self.data)
-		self.target = target
-		# print(self.target)
+	def __init__(self, data, target, neu_intermedia, pesos=None):
+		self.data = data.copy()
+		self.data["bias"] = 1
+		self.target = pd.get_dummies(target.copy().astype(str), prefix='', prefix_sep='')
 
-		self.num_feat = len(data.columns)
-		self.num_inter = neu_intermedia
-		self.num_out = len(target.columns)
+		self.clases = self.target.columns
 
-		self.w_feats = np.random.randn(self.num_feat, self.num_inter)
-		self.w_inter = np.random.randn(self.num_inter, self.num_out)
-		#self.feats = np.random.uniform(-1,1,size=self.num_feat)
 
+		self.num_feat = len(self.data.columns)
+		self.num_inter = neu_intermedia 
+		self.num_out = len(self.target.columns)
+
+		if pesos:
+			self.w_feats = pesos[0]
+			self.w_inter = pesis[1]
+		else:
+			self.w_feats = np.random.randn(self.num_feat, self.num_inter)
+			self.w_inter = np.random.randn(self.num_inter + 1, self.num_out)
+
+	'''
+		Funcion Sigmoidal
+	'''
+	def _sigmoid(self, m):
+		return 1/(1+np.exp(-m))
+
+	'''
+		Derivada de la Funcion Sigmoidal
+	'''
+	def _der_sigmoid(self, m):
+		return m * (1 - m)
+
+	'''
+	'''
 	def propagate(self):
-		self.feats_w = np.dot(self.data,self.w_feats)
-		self.activacion = sigmoid(self.feats_w)
-		self.inter_w = np.dot(self.activacion, self.w_inter)
-		resultado = sigmoid(self.inter_w)
-		# print(resultado)
+		self.activacion = self._sigmoid(np.dot(self.data, self.w_feats))
+		sesgo = np.ones( (self.activacion.shape[0], 1) )
+		self.activacion = np.concatenate((self.activacion, sesgo), axis=1)
+
+		resultado = self._sigmoid(np.dot(self.activacion, self.w_inter))
 		return resultado
 
-	def backpropagate(self,lr):
-		resultado = self.propagate()
-		L = (1/self.data.shape[0]) * np.sum(-self.target * np.log(resultado) - (1 - self.target) * np.log(1 - resultado))
-		
+	'''
+	'''
+	def backpropagate(self, lr, resultado):		
 		error_salida = self.target - resultado
-		delta_salida = error_salida * der_sigmoid(resultado)
+		delta_salida = error_salida * self._der_sigmoid(resultado)
 
 		error_w_inter = delta_salida.dot(self.w_inter.T)
-		delta_inter = error_w_inter * der_sigmoid(self.activacion)
+		delta_inter = error_w_inter * self._der_sigmoid(self.activacion)
 
-		self.w_feats += lr * self.data.T.dot(delta_inter)
+		self.w_feats += lr * self.data.T.dot(delta_inter.iloc[:, :-1])
 		self.w_inter += lr * self.activacion.T.dot(delta_salida)
-		# print("Perdida: %f" % (L))
 
-	def entrenar(self,epocas,lr):
-		print("Epocas %d | Tasa de aprendizaje %f" % (epocas,lr))
+	'''
+	'''
+	def train(self, epocas, lr):
+		print("Epocas %d | Tasa de aprendizaje %s" % (epocas,lr))
 		errores = np.zeros(epocas)
 		for e in range(epocas):
-			# print("Epoca %d" % (e))
-			self.backpropagate(lr)
+			if e % 200 == 0: print("Epoca:", e)
+			o = self.propagate()
+			self.backpropagate(lr, o)
 
-	def accuracy(self):
-		correcto = 0
-		incorrecto = 0
-		resultado = self.propagate()
-		t_val = self.target.values
-		for x in range(len(self.data)):
-			max_r = np.argmax(resultado[x])
-			# print(max_r)
-			if abs(t_val[x,max_r] - 1.0) < 1.0e-5:
-				correcto += 1
-			else:
-				incorrecto += 1
-		return (correcto * 1.0) / (correcto + incorrecto)
-			
+			acc, _, _ = metricas_eval(pd.DataFrame(self.target).idxmax(axis=1), self.forward(self.data))
+			errores[e] = 1 - acc
 
-			
+		return errores
 
-data = pd.read_csv("irisTrainData.txt", sep=",", header=None)
-# print(data)
-target = pd.DataFrame(data.iloc[:,-3:])
-data = data.drop(data.columns[-1], axis=1)
-data = data.drop(data.columns[-1], axis=1)
-data = data.drop(data.columns[-1], axis=1)
+	'''
+	'''
+	def forward(self, X):
+		X = X.copy()
+		X["bias"] = 1
 
-RN = RedNeural(data,target,2)
-RN.entrenar(1000,0.05)
-print("Accuracy: %f" % (RN.accuracy()))
+		activacion = self._sigmoid(np.dot(X, self.w_feats))
+		sesgo = np.full( (activacion.shape[0], 1), 1 )
+		activacion = np.concatenate((activacion, sesgo), axis=1)
+
+		resultado = self._sigmoid(np.dot(activacion, self.w_inter))
+
+		resultado = pd.DataFrame(resultado, columns=self.clases)
+		resultado = resultado.idxmax(axis=1)
+
+		return resultado
+
+
+	def save_w():
+		np.savetxt("w1.txt", self.w_feats, fmt="%s")
+		np.savetxt("w2.txt", self.w_inter, fmt="%s")
+
