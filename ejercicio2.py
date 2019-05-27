@@ -5,8 +5,8 @@ from redNeural import *
 
 # Se lee el archivo con la entrada
 # data = pd.read_csv("datos_P2_EM2019_N500.txt", sep="\s", header=None)
-# data = pd.read_csv("datos_P2_EM2019_N1000.txt", sep="\s", header=None)
-data = pd.read_csv("datos_P2_EM2019_N2000.txt", sep="\s", header=None)
+data = pd.read_csv("datos_P2_EM2019_N1000.txt", sep="\s", header=None)
+# data = pd.read_csv("datos_P2_EM2019_N2000.txt", sep="\s", header=None)
 
 # Separamos el target y lo transformamos a String.
 target = pd.DataFrame(data.iloc[:,-1]).astype(str)
