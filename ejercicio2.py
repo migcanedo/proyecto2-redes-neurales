@@ -13,14 +13,14 @@ target = pd.DataFrame(data.iloc[:,-1]).astype(str)
 data = data.drop(data.columns[-1], axis=1)
 
 # Separamos el dataset en Train y Test
-data_train, data_test, target_train, target_test = train_test_split(data, target, test_size = 0.2, shuffle=False)
+data_train, data_test, target_train, target_test = train_test_split(data, target, test_size = 0.2, shuffle=True)
 
 # Definimos la Red Neuronal con n cantidad de neuronas en la capa oculta
 n = 8
 RN = RedNeural(data_train, target_train, n)
 
 # Entrenamos la Red
-epocas = 100000
+epocas = 50000
 tasa = 0.0001
 errores = RN.train(epocas, tasa)
 
@@ -30,7 +30,7 @@ ax.plot(errores)
 ax.set_ylim((0, 1))
 plt.xlabel('Epocas')
 plt.ylabel('Proporción de elementos mal clasificados')
-plt.title("Historial de Errores con tasa de aprendizaje " + str(tasa))
+plt.title("Historial de Errores con %s Neuronas"%n)
 plt.show()
 
 # Imprime las Metricas de Evaluacion de Train y Test
@@ -61,12 +61,13 @@ probando["T"] = RN.forward(probando)
 
 # Se grafican los puntos del plano para apreciar la evaluacion
 fig, ax = plt.subplots()
-ax.add_artist(plt.Circle((5,5), 4, alpha=0.3))
+ax.add_artist(plt.Circle((5,5), 4, fill=False))
+fig.set_size_inches(8, 8)
 ax.set_xlim((0, 10))
 ax.set_ylim((0, 10))
 plt.xlabel('Eje X')
 plt.ylabel('Eje Y')
-plt.title("Clasificación de los puntos del plano 10x10")
+plt.title("Puntos puntos del plano 10x10 con %s Neuronas"%n)
 probando[probando["T"] == "1"].plot.scatter(x=0, y=1, c='blue', ax=ax)
 probando[probando["T"] == "-1"].plot.scatter(x=0, y=1, c='red', ax=ax)
 plt.show()
