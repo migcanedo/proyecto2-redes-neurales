@@ -1,7 +1,10 @@
 import pandas as pd
 import numpy as np
 
-
+'''
+	Funcion que dado un DataFrame, normaliza cada columna del mismo 
+	con el metodo Z-score.
+'''
 def normalizar(data):
 	return (data - data.mean()) / data.std()
 
@@ -14,12 +17,12 @@ def normalizar(data):
 		- # de Falsos Negativos
 	
 '''
-def metricas_eval(t_ori, t_obt):
+def metricas_eval(t_ori, t_obt, clases=["1", "-1"]):
 	concat = pd.concat([t_ori.reset_index(drop=True), t_obt.reset_index(drop=True)], axis=1)
 	concat.columns = ["ori", "obt"]
 	acc = (concat.iloc[:,0] == concat.iloc[:,1]).astype(int).sum()/concat.shape[0]
-	falsos_negativos = concat[(concat["ori"] == "1")&(concat["obt"] == "-1")]["ori"].count()
-	falsos_positivos = concat[(concat["ori"] == "-1")&(concat["obt"] == "1")]["ori"].count()
+	falsos_negativos = concat[(concat["ori"] == clases[0])&(concat["obt"] == clases[1])]["ori"].count()
+	falsos_positivos = concat[(concat["ori"] == clases[1])&(concat["obt"] == clases[0])]["ori"].count()
 
 	return acc, falsos_positivos, falsos_negativos
 
@@ -87,7 +90,7 @@ class RedNeural():
 		print("Epocas %d | Tasa de aprendizaje %s" % (epocas,lr))
 		errores = np.zeros(epocas)
 		for e in range(epocas):
-			if e % 200 == 0: print("Epoca:", e)
+			# if e % 1000 == 0: print("Epoca:", e)
 			o = self.propagate()
 			self.backpropagate(lr, o)
 
@@ -117,4 +120,3 @@ class RedNeural():
 	def save_w():
 		np.savetxt("w1.txt", self.w_feats, fmt="%s")
 		np.savetxt("w2.txt", self.w_inter, fmt="%s")
-
